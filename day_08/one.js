@@ -25,22 +25,22 @@ const main = () => {
 
   console.log(sequence, map);
 
-  // let steps = 0;
+  let steps = 0;
 
-  // let currKey = "AAA";
-  // let currMap = map[currKey];
-  // let finish = "ZZZ";
+  let currKey = "AAA";
+  let currMap = map[currKey];
+  let finish = "ZZZ";
 
-  // while (currKey != finish) {
-  //   let direction = sequence[steps % sequence.length];
+  while (currKey != finish) {
+    let direction = sequence[steps % sequence.length];
 
-  //   currKey = map[currKey][direction];
-  //   currMap = map[currKey];
+    currKey = map[currKey][direction];
+    currMap = map[currKey];
 
-  //   steps += 1;
-  // }
+    steps += 1;
+  }
 
-  // console.log(steps);
+  console.log(steps);
 };
 
 main();
