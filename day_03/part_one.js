@@ -2,7 +2,7 @@ const fs = require("fs");
 
 let line = fs.readFileSync("long.txt", "utf8");
 
-let sum = 0;
+let arrays = [];
 for (let i = 2; i < line.length; i++) {
   let charLead = line[i];
   let charMid = line[i - 1];
@@ -24,8 +24,11 @@ for (let i = 2; i < line.length; i++) {
         if (stack.length === 0) {
           let vals = line.slice(i + 2, j);
           vals = vals.split(",");
-          sum += vals[0] * vals[1];
-          console.log(vals);
+
+          if (vals.length === 2) {
+            arrays.push(vals);
+          }
+
           break;
         }
       }
@@ -33,4 +36,15 @@ for (let i = 2; i < line.length; i++) {
   }
 }
 
-console.log(sum); // not working
+let sum = 0;
+for (let [x, y] of arrays) {
+  x = Number(x);
+  y = Number(y);
+  if (typeof x !== "number" || typeof y !== "number" || isNaN(x) || isNaN(y)) {
+    console.log(x, y);
+  } else {
+    sum += x * y;
+  }
+}
+
+console.log(sum); // this works lol?
