@@ -17,14 +17,15 @@ linesArray = linesArray.map((line) => {
 
 // create binary tree class
 class TreeNode {
-  constructor(val, left, right) {
+  constructor(val, left, right, mid) {
     this.val = val === undefined ? 0 : val;
     this.left = left === undefined ? null : left;
     this.right = right === undefined ? null : right;
+    this.mid = mid === undefined ? null : mid;
   }
 }
 
-// create binary trees
+// create trinary trees
 let roots = [];
 
 for (let arr of linesArray) {
@@ -42,6 +43,11 @@ for (let arr of linesArray) {
       dfs(node.left, copy);
     }
 
+    if (node.mid === null) {
+      node.mid = new TreeNode(curr);
+      dfs(node.mid, copy);
+    }
+
     if (node.right === null) {
       node.right = new TreeNode(curr);
       dfs(node.right, copy);
@@ -57,27 +63,6 @@ for (let arr of linesArray) {
 
 console.log(roots);
 
-// test binary tree correctness
-// let bfs = (node, levels, level) => {
-//   if (node === null) return null;
-//   if (level === levels.length) levels.push([]);
-//   levels[level].push(node.val);
-//   // console.log(levels[level]);
-
-//   if (node.left) bfs(node.left, levels, level + 1);
-//   if (node.right) bfs(node.right, levels, level + 1);
-
-//   return levels;
-// };
-
-// let trees = [];
-// for (let root of roots) {
-//   console.log(root);
-//   let tree = bfs(root, [], 0);
-//   trees.push(tree);
-// }
-// console.log(trees[2]);
-
 // count final sum for submission
 let sum = 0;
 
@@ -87,12 +72,13 @@ for (let i in linesArray) {
 
   let ok = false;
   let dfs = (node, acc) => {
-    if (!node.left && !node.right) {
+    if (!node.left && !node.right && !node.mid) {
       if (acc === target) ok = true;
       return;
     }
     if (node.left) dfs(node.left, acc + node.left.val);
     if (node.right) dfs(node.right, acc * node.right.val);
+    if (node.mid) dfs(node.mid, Number(String(acc) + String(node.mid.val)));
   };
 
   dfs(root, root.val);
