@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-let lines = fs.readFileSync("long.txt", "utf8");
+let lines = fs.readFileSync("short.txt", "utf8");
 let linesArray = lines.split("\n");
 
 linesArray = linesArray.map((line) => {
@@ -32,7 +32,6 @@ console.log(antennaDict);
 
 let antennaKeys = Object.keys(antennaDict);
 
-let count = 0;
 let set = new Set();
 
 for (let key of antennaKeys) {
@@ -51,26 +50,34 @@ for (let key of antennaKeys) {
       let bDiff = [x2 - x1, y2 - y1];
       let aDiff = [x1 - x2, y1 - y2];
 
-      let antinodeA = [x1 + aDiff[0], y1 + aDiff[1]];
+      // let antinodeA = [x1 + aDiff[0], y1 + aDiff[1]];
 
-      let xBoundA = 0 <= antinodeA[0] && antinodeA[0] < cols;
-      let yBoundA = 0 <= antinodeA[1] && antinodeA[1] < rows;
+      let xNextA = x1 + aDiff[0];
+      let yNextA = y1 + aDiff[1];
 
-      if (xBoundA && yBoundA) {
-        console.log(antinodeA);
-        set.add(antinodeA.join(","));
-        count += 1;
+      // let xBoundA = 0 <= xNextA && xNextA < cols;
+      // let yBoundA = 0 <= yNextA && yNextA < rows;
+
+      while (0 <= xNextA && xNextA < cols && 0 <= yNextA && yNextA < rows) {
+        xNextA += aDiff[0];
+        yNextA += aDiff[1];
+
+        set.add([xNextA, yNextA].join(","));
       }
 
-      let antinodeB = [x2 + bDiff[0], y2 + bDiff[1]];
+      // let antinodeB = [x2 + bDiff[0], y2 + bDiff[1]];
 
-      let xBoundB = 0 <= antinodeB[0] && antinodeB[0] < cols;
-      let yBoundB = 0 <= antinodeB[1] && antinodeB[1] < rows;
+      let xNextB = x2 + bDiff[0];
+      let yNextB = y2 + bDiff[1];
 
-      if (xBoundB && yBoundB) {
-        console.log(antinodeB);
-        set.add(antinodeB.join(","));
-        count += 1;
+      // let xBoundB = 0 <= xNextB && xNextB < cols;
+      // let yBoundB = 0 <= yNextB && yNextB < rows;
+
+      while (0 <= xNextB && xNextB < cols && 0 <= yNextB && yNextB < rows) {
+        xNextB += bDiff[0];
+        yNextB += bDiff[1];
+
+        set.add([xNextB, yNextB].join(","));
       }
 
       console.log(" ");
@@ -78,5 +85,14 @@ for (let key of antennaKeys) {
   }
 }
 
+let count = 0;
+console.log(set);
+for (let item of set) {
+  item = item.split(",").map((node) => Number(node));
+  let withinX = 0 <= item[0] && item[0] <= cols;
+  let withinY = 0 <= item[1] && item[1] <= rows;
+
+  if (withinX && withinY) count++;
+}
+
 console.log(count);
-console.log(set.size);
