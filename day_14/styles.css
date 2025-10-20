@@ -1,0 +1,14 @@
+.container {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  /* background-color: red; */
+  display: grid;
+  grid-template-columns: repeat(101, 1fr);
+  grid-template-rows: reeat(103, 1fr);
+}
+
+.cell {
+  width: auto;
+  height: auto;
+}
