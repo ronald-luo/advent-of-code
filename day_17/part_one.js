@@ -123,7 +123,6 @@ class Computer {
   // 5. (combo + output) outputs values as a comma separated list
   out(operand) {
     let result = this.combo(operand) % 8;
-    // console.log(this.combo(operand));
     console.log(result);
     this.output.push(result);
   }
