@@ -7,7 +7,7 @@ let lines = fs.readFileSync("large.txt", "utf8");
 // iterate to answer
 
 let result = lines.trim().split(" ");
-let count = 25;
+let count = 75;
 console.log(result);
 
 while (count > 0) {
