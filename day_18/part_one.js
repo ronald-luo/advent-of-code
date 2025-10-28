@@ -63,7 +63,7 @@ while (queue.length > 0) {
     let rowBound = 0 <= nextRow && nextRow < rows;
     let colBound = 0 <= nextCol && nextCol < cols;
 
-    if (rowBound && colBound) {
+    if (rowBound && colBound)
       if (!walls.has(`${nextCol},${nextRow}`)) {
         let nextCost = costs[`${nextCol},${nextRow}`];
         let betterCost = costs[`${currCol},${currRow}`] + 1;
@@ -74,7 +74,6 @@ while (queue.length > 0) {
           queue.push([nextCol, nextRow]);
         }
       }
-    }
   }
 }
 
