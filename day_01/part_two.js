@@ -1,50 +1,55 @@
-let fs = require("fs");
+const fs = require("fs");
 
-let lines = fs.readFileSync("large.txt", "utf-8");
+function solve(input) {
+  const lines = input
+    .trim()
+    .split("\n")
+    .map((line) => line.trim());
 
-lines = lines.split("\n").map((line) => line.trim());
+  let currPos = 50;
+  let zeroCount = 0;
 
-let currVal = 50;
-let currRot = 0;
+  for (const line of lines) {
+    const direction = line[0];
+    const distance = Number(line.slice(1));
 
-let zeroCount = 0;
-
-for (let i = 0; i < lines.length; i++) {
-  let temp = lines[i];
-
-  currRot =
-    temp[0] === "R"
-      ? Number(temp.split("R")[1])
-      : Number(temp.split("L")[1]) * -1;
-
-  console.log("currRot", currRot);
-  console.log("currVal", currVal);
-
-  // Calculate how many times we pass through 0
-  let start = currVal;
-  let distance = Math.abs(currRot);
-
-  if (currRot > 0) {
-    // Going right
-    let timesThrough0 = Math.floor((start + currRot) / 100);
-    zeroCount += timesThrough0;
-    console.log("  going right, times through 0:", timesThrough0);
-  } else {
-    // Going left
-    let timesThrough0 =
-      Math.floor((start - distance) / 100) - Math.floor(start / 100);
-    timesThrough0 = Math.abs(timesThrough0);
-    zeroCount += timesThrough0;
-    console.log("  going left, times through 0:", timesThrough0);
+    if (direction === "L") {
+      // Going left from currPos by distance clicks
+      // We hit 0 when we've moved currPos steps (if currPos > 0)
+      // Then every 100 steps after that
+      if (currPos === 0) {
+        // Starting at 0, going left: first click goes to 99, then we hit 0 again after 100 more clicks
+        zeroCount += Math.floor(distance / 100);
+      } else {
+        // Starting at currPos > 0: we hit 0 after currPos clicks, then every 100 after
+        // Total hits = floor((distance - currPos) / 100) + 1 if distance >= currPos
+        // = 0 if distance < currPos
+        if (distance >= currPos) {
+          zeroCount += 1 + Math.floor((distance - currPos) / 100);
+        }
+      }
+      currPos = (((currPos - distance) % 100) + 100) % 100;
+    } else {
+      // Going right from currPos by distance clicks
+      // We hit 0 when we wrap from 99 to 0
+      // That happens after (100 - currPos) clicks, then every 100 after
+      if (currPos === 0) {
+        // Starting at 0, going right: first click goes to 1, we hit 0 after 100 clicks
+        zeroCount += Math.floor(distance / 100);
+      } else {
+        // Starting at currPos > 0: we hit 0 after (100 - currPos) clicks, then every 100
+        const stepsToZero = 100 - currPos;
+        if (distance >= stepsToZero) {
+          zeroCount += 1 + Math.floor((distance - stepsToZero) / 100);
+        }
+      }
+      currPos = (currPos + distance) % 100;
+    }
   }
 
-  // Update position
-  currVal = (((currVal + currRot) % 100) + 100) % 100;
-
-  console.log("  new position:", currVal);
-  console.log("  total zeroCount:", zeroCount);
-  console.log("");
+  return zeroCount;
 }
 
-console.log("zeroCount", zeroCount);
-console.log("currVal", currVal);
+// Run with puzzle input
+const puzzleInput = fs.readFileSync("large.txt", "utf-8");
+console.log("Puzzle answer:", solve(puzzleInput));
