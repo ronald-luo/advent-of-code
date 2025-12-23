@@ -1,5 +1,5 @@
-## Advent of Code 2022
+## Advent of Code
 
-25 problems, 1 per day.
+25 problems, 2 per day.
 
-Try the challenge here: https://adventofcode.com/2022
+Try the challenge here: https://adventofcode.com
