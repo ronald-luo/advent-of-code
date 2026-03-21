@@ -1,6 +1,6 @@
 let fs = require("fs");
 
-let lines = fs.readFileSync("small.txt", "utf-8");
+let lines = fs.readFileSync("large.txt", "utf-8");
 lines = lines.split("\n").map((line) => line.trim());
 let instructions = lines;
 
@@ -10,7 +10,6 @@ for (let instruc of instructions) {
   let temp = instruc.split(" contain ");
   let = [parentAdj, parentCol, _bags] = temp[0].split(" ");
   // console.log(parentAdj, parentCol);
-
   let children = temp[1].split(", ");
   children = children.map((node) => {
     let [childCount, childAdj, childCol, _bags] = node.split(" ");
@@ -23,16 +22,20 @@ for (let instruc of instructions) {
     };
   });
   // console.log(children);
-
   if (children[0] === undefined) children = [];
   adjGraph[`${parentAdj}-${parentCol}`] = children;
 }
-// console.log(adjGraph);
 
 let helper = (node) => {
   let neighbors = adjGraph[node];
+  let totalBags = 0;
+  for (let { childCount, bag } of neighbors) {
+    totalBags += childCount + childCount * helper(bag);
+  }
+
+  return totalBags;
 };
 
-console.log(adjGraph["shiny-gold"]);
-let temp = helper("shiny-gold");
-console.log(temp);
+let totalBags = helper("shiny-gold");
+
+console.log(totalBags);
