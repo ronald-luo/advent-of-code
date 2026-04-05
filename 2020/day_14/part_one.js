@@ -32,7 +32,7 @@ for (let line of lines) {
   let value = Number(temp[2]).toString(2);
 
   // Find new integer
-  let newValue = new Array(36 - 1).fill(0); // O of C space complexity, always 36 bits
+  let newValue = new Array(36).fill(0); // O of C space complexity, always 36 bits
   let valInd = value.length - 1;
 
   // O of C time complexity, always 36 bits
