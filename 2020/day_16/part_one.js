@@ -19,9 +19,6 @@ let parser = () => {
     }
 
     if (spaces === 0) {
-      // let one = line.split(" or ")[0].split(" ")[1].split("-").map(Number);
-      // let two = line.split(" or ")[1].split("-").map(Number);
-
       let one = line.split(" or ").at(-1).split("-").map(Number);
       let two = line
         .split(" or ")
@@ -30,9 +27,6 @@ let parser = () => {
         .at(-1)
         .split("-")
         .map(Number);
-
-      // console.log(one);
-      // console.log(two);
 
       rules.push(one);
       rules.push(two);
@@ -49,10 +43,6 @@ let parser = () => {
     }
   }
 
-  // console.log("rules are", rules);
-  // console.log("my ticket is", myTicket);
-  // console.log("nearby tickets", nearbyTickets);
-
   return { rules, myTicket, nearbyTickets };
 };
 
@@ -62,12 +52,13 @@ let { rules, myTicket, nearbyTickets } = parser(lines);
 // console.log("nearby tickets", nearbyTickets);
 
 // Find ticket error rate by scanning each nearby ticket
-// Time: ____, Space: ____, Output: Integer
+// Time: O(RLogR + N*R), Space: O(R), Output: Integer, R = Rules, N = Vals
 let findErrorRate = (rules, nearbyTickets) => {
   // sort and merge intervals
   let newRules = [rules[0]];
   rules = rules.sort((a, b) => a[0] - b[0]); // N Log N
 
+  // O(N) iterate to create merged intervals
   for (let i = 1; i < rules.length; i++) {
     if (rules[i][0] - 1 <= newRules[newRules.length - 1][1]) {
       newRules[newRules.length - 1][0] = Math.min(
@@ -87,6 +78,7 @@ let findErrorRate = (rules, nearbyTickets) => {
 
   let errorRate = 0;
 
+  // Iterate through every val, then every rule, O(N * R)
   for (let arr of nearbyTickets) {
     for (let val of arr) {
       let isInvalid = true;
