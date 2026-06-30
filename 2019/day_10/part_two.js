@@ -132,18 +132,23 @@ let queue = Array.from(astRadsFromNorth.keys()).sort();
 // console.log(queue);
 
 let count = 0;
+let i = 0;
 let lastDestroyed;
 
 while (count < 200) {
-  let current = queue[count % queue.length];
+  let current = queue[i % queue.length];
   let sharedAngle = astRadsFromNorth.get(current) || [];
 
-  if (!sharedAngle.length) continue;
+  if (!sharedAngle.length) {
+    i++;
+    continue;
+  }
 
   let destroyed = sharedAngle.pop();
   lastDestroyed = destroyed;
 
   count++;
+  i++;
 }
 
 let [answerX, answerY] = lastDestroyed.actualCoord;
